@@ -1,0 +1,6 @@
+# Server-side only. Never use a NEXT_PUBLIC_ prefix.
+OPENAI_API_KEY=
+
+# Optional, non-secret story-character configuration.
+STORY_CHILD_NAME=Sam
+STORY_CHILD_APPEARANCE=Sam is a fictional six-year-old child with dark brown skin, springy black curls, round teal glasses, an orange-and-cream striped T-shirt, navy overalls, and yellow sneakers.
