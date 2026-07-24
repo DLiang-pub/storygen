@@ -27,55 +27,11 @@ pictures sent to OpenAI and the resulting bill.
   internet address backed by your paid key must be protected before use.
 
 A coding-assistant app may require its own subscription or usage payment; that
-is separate from the OpenAI API bill for StoryGen and is not included in the
-per-story estimate. The manual path avoids that extra setup-tool cost.
+is separate from StoryGen's OpenAI API charges. The manual path avoids that
+extra setup-tool cost.
 
 “Local” means the app runs privately on your own computer. “Putting it online”
 means publishing it at an internet address so another device can reach it.
-
-### Cost per story
-
-At the prices published on **24 July 2026**, budget approximately:
-
-- **US$1.30–$1.60** for a successful nine-page story without a villain; or
-- **US$1.80–$2.10** for a successful nine-page story with a villain.
-
-This is a calculated planning range, not a guaranteed invoice. A failed attempt,
-an automatic correction, or repainting a page can add cost.
-It does not assume that OpenAI will reuse any input at a discount, and it
-assumes an ordinary square, portrait, or landscape upload. An unusually wide
-panorama can cost more.
-
-The calculation uses the app as it exists in this public project copy:
-
-1. one paid `gpt-5.6-terra` request plans the text and studies the uploaded
-   picture;
-2. nine paid `gpt-image-2` requests paint the nine pages—those two code-like
-   names identify the particular OpenAI systems doing the work;
-3. a no-villain story sends reference pictures 26 times across those page
-   requests; a villain story sends them 35 times, always at high fidelity
-   (OpenAI's term for preserving more detail from the supplied picture);
-4. applying OpenAI's linked high-fidelity calculation, the repeated reference
-   pictures account for about **US$1.21–$1.84**;
-5. nine low-quality 1536×1024 outputs account for about **US$0.045** in total;
-   and
-6. the story plan and the illustration instructions account for roughly the
-   remaining **US$0.10–$0.20**.
-
-OpenAI bills by “tokens,” small units used to measure text and pictures.
-“Input” is material sent to the AI; “output” is material it creates. The
-current rates used above are:
-
-- `gpt-5.6-terra`: US$2.50 per million input tokens and US$15.00 per million
-  output tokens;
-- `gpt-image-2`: US$8.00 per million input-image tokens, US$5.00 per million
-  input-text tokens, and the current low landscape output price; and
-- the high-fidelity reference-image calculation linked from OpenAI's image
-  guide.
-
-Check [OpenAI's current pricing](https://developers.openai.com/api/docs/pricing)
-and [image-cost guide](https://developers.openai.com/api/docs/guides/image-generation#cost-and-latency)
-before relying on the estimate. Prices and model behavior can change.
 
 ### The two accounts
 
@@ -195,11 +151,11 @@ Please do this:
 10. Confirm that the StoryGen home screen loads and that the story allowance is
     available. If it says the allowance is unavailable, stop and repair the
     local database connection before spending anything.
-11. Before the first real story, remind me that a normal successful nine-page
-    story currently costs about US$1.30–$1.60 without a villain or
-    US$1.80–$2.10 with one, and ask for my approval. Only after I approve, walk
-    me through uploading a non-sensitive drawing or toy-build photo, naming the
-    creation, choosing the recipe, and pressing Make tonight's story.
+11. Before the first real story, remind me that it will use my paid OpenAI API
+    account, confirm that I set a monthly spending limit, and ask for my
+    approval. Only after I approve, walk me through uploading a non-sensitive
+    drawing or toy-build photo, naming the creation, choosing the recipe, and
+    pressing Make tonight's story.
 12. Stay with the test until the text appears and all nine page pictures either
     finish or show a clear retry button. Help me read page 1, explain where the
     draft and saved shelf live, and show me how to stop the local app with
@@ -653,7 +609,7 @@ This is the first step that intentionally spends OpenAI credit.
    home address, document, location label, or another child's face.
 2. Select the upload area and choose the picture.
 3. Give the creation a short name or description.
-4. For the lower-cost first test, turn the villain off.
+4. For the simplest first test, turn the villain off.
 5. Press **Make tonight's story**.
 6. Wait for the story text and page 1 picture. Later pictures paint in the
    background.
@@ -671,8 +627,8 @@ Likely errors:
 - **“No API credits” or an insufficient-credit message:** check OpenAI API
   billing and the hard monthly limit. A ChatGPT subscription does not include
   API credit. If the message instead says a model is unavailable or access is
-  denied, confirm that this OpenAI project can use both model names listed in
-  [Cost per story](#cost-per-story).
+  denied, confirm that this OpenAI project can use both configured model names:
+  `gpt-5.6-terra` and `gpt-image-2`.
 - **The story appears but one picture fails:** if it says busy or rate-limited
   (OpenAI's temporary pace limit), wait at least one minute or the retry time
   shown before using that page's repaint button. New paid accounts can start

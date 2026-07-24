@@ -27,8 +27,12 @@ npm test
 git diff --check
 ```
 
-The committed tests mock provider calls. Do not spend OpenAI credits merely to
-submit a code change.
+`npm test` builds the app and runs its automatic checks. OpenAI calls in the
+included tests are replaced with fake answers and should not spend OpenAI
+credit. `npm run lint` looks for common code problems, and `git diff --check`
+checks edited files for accidental spacing errors.
+
+Do not spend OpenAI credits merely to submit a code change.
 
 ## Pull request notes
 
@@ -44,3 +48,11 @@ Explain:
 By contributing source code, you agree that your contribution may be distributed
 under the MIT License. Do not contribute media or personal data unless you own
 the necessary rights and the maintainer has agreed to its license in writing.
+
+## Repository policy
+
+StoryGen is intentionally OpenAI-only. Pull requests that add another model
+service, move the secret key into browser code, publish real child uploads, or
+remove the billing-safety check will not be accepted without explicit maintainer
+review. A pull request is a proposed code change submitted for review on
+GitHub.

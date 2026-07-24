@@ -5,6 +5,12 @@
 StoryGen is a single-family, browser-local story application with server-side
 OpenAI calls. It has no user-account system and no server-side story library.
 
+## Origin
+
+The project began with a six-year-old's drawing. The requested story was
+“happy, scary, and then happy again.” A parent wanted the drawing itself to
+appear in the book, not merely inspire the text.
+
 ## Main flow
 
 ```text
@@ -115,32 +121,8 @@ D1 contains short-lived anonymous count/expiry rows. Client fingerprints are
 HMAC-derived from an address value and the server secret. No raw upload, story,
 or generated image column exists.
 
-### Server counter table
-
-The exact D1 schema is:
-
-```text
-storygen_request_limits
-  key        TEXT PRIMARY KEY
-  count      INTEGER NOT NULL
-  expires_at INTEGER NOT NULL
-```
-
-`key` is the unique anonymous bucket identifier, `count` is the accepted
-request count, and `expires_at` is its expiry time. `TEXT PRIMARY KEY` means the
-text key uniquely identifies a row; `INTEGER NOT NULL` means the number must be
-present.
-
-### Local D1 setup
-
-`npm run setup:local` runs Wrangler's local D1 migration command with
-`wrangler.local.jsonc`. That file deliberately uses the same `DB` binding,
-database name, placeholder database ID, and `drizzle/` migration directory as
-the Vite development configuration. Both commands therefore resolve to the
-same project-local Miniflare database under the ignored `.wrangler/` directory.
-The placeholder ID is not a production database credential and cannot address
-a remote D1 database. Applying the command again is idempotent because Wrangler
-records the applied migration.
+The exact schema and local migration mechanics are in
+[DEPLOYMENT.md](DEPLOYMENT.md#database).
 
 ### Static assets
 
@@ -187,6 +169,41 @@ or the signing secret is unavailable. It limits story starts, page requests,
 per-story art attempts, and per-page attempts. It does not know API prices,
 token usage, billing balance, or whether a provider later charges for a failed
 request.
+
+## Technology
+
+- **Next.js 16 and React 19:** tools used to build the screens and app behavior.
+- **vinext and Vite:** tools that package the app so it can run on Cloudflare.
+- **Cloudflare Workers:** the service that runs the server-side code close to
+  visitors without requiring the parent to manage a physical server.
+- **Cloudflare D1:** the small database used only to count requests.
+- **Cloudflare asset and image bindings:** named connections that let the app
+  serve its bundled files and resize images.
+- **OpenAI Responses API and Image Edits API:** the two OpenAI services used to
+  plan the story and paint new illustrations.
+- **IndexedDB and localStorage:** storage inside the browser for books and small
+  preferences.
+- **Drizzle:** a database tool used here to describe and create the one counter
+  table.
+
+The current source uses `gpt-5.6-terra` for story planning and `gpt-image-2`
+for illustrations. These names identify the two OpenAI models (the particular
+AI systems doing the work). A live copy needs an OpenAI project that can use
+both models.
+
+## How this was built
+
+StoryGen was built end-to-end with AI coding agents directed through written
+instructions, rather than by typing the implementation line by line. Those
+instructions set the product behavior, privacy boundaries, generation flow, and
+visual direction. Structured audits required the agents to support claims with
+specific files and measurements. Speed work used real timing measurements
+rather than guesses. Accessibility work included calculated color-contrast
+tables and repeated checks against WCAG (the Web Content Accessibility
+Guidelines). Mobile screenshots and step-by-step design reviews kept the app
+close to the intended picture-book experience. Automated builds and tests
+checked each revision before publication. The maintainer reviewed and directed
+the result and remains responsible for the online copy.
 
 ## Deliberate non-features
 
