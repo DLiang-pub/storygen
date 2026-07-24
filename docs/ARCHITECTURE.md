@@ -115,6 +115,33 @@ D1 contains short-lived anonymous count/expiry rows. Client fingerprints are
 HMAC-derived from an address value and the server secret. No raw upload, story,
 or generated image column exists.
 
+### Server counter table
+
+The exact D1 schema is:
+
+```text
+storygen_request_limits
+  key        TEXT PRIMARY KEY
+  count      INTEGER NOT NULL
+  expires_at INTEGER NOT NULL
+```
+
+`key` is the unique anonymous bucket identifier, `count` is the accepted
+request count, and `expires_at` is its expiry time. `TEXT PRIMARY KEY` means the
+text key uniquely identifies a row; `INTEGER NOT NULL` means the number must be
+present.
+
+### Local D1 setup
+
+`npm run setup:local` runs Wrangler's local D1 migration command with
+`wrangler.local.jsonc`. That file deliberately uses the same `DB` binding,
+database name, placeholder database ID, and `drizzle/` migration directory as
+the Vite development configuration. Both commands therefore resolve to the
+same project-local Miniflare database under the ignored `.wrangler/` directory.
+The placeholder ID is not a production database credential and cannot address
+a remote D1 database. Applying the command again is idempotent because Wrangler
+records the applied migration.
+
 ### Static assets
 
 Character reference sheets are bundled so server routes can load them through
@@ -122,9 +149,11 @@ Character reference sheets are bundled so server routes can load them through
 requests to those paths. A public source repository still exposes the files
 themselves.
 
-The non-secret deployment variables `STORY_CHILD_NAME` and
-`STORY_CHILD_APPEARANCE` customize the story-child prompt identity. A deployer
-changing that identity must also replace the bundled
+The deployment variables `STORY_CHILD_NAME` and `STORY_CHILD_APPEARANCE`
+customize the story-child prompt identity. They are not authentication
+credentials, but personalized values may still be private family information
+and should not be committed to a public source tree. A deployer changing that
+identity must also replace the bundled
 `public/story/sam-character-reference.webp` with a matching, authorized
 character sheet.
 
